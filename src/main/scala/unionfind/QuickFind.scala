@@ -1,6 +1,6 @@
 package unionfind
 
-class QuickFind(private val n: Int) extends UnionFind {
+class QuickFind(n: Int) extends UnionFind {
   private val id = (0 until n).toArray
 
   /** change all entries with id[p] to id[q] (at most 2N + 2 array accesses) */
