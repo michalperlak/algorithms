@@ -18,14 +18,16 @@ public class Percolation {
     public void open(int row, int col) {
         var index = index(row, col);
         opened[index] = true;
+        for (int neighbourIndex : openNeighbours(row, col)) {
+            if (neighbourIndex < 0) continue;
+            unionFind.union(index, neighbourIndex);
+        }
         if (row == 1) {
             unionFind.union(index, sourceIndex);
         }
         if (row == n && unionFind.find(sourceIndex) == unionFind.find(index)) {
             percolates = true;
         }
-
-        unionFind.union(0, index(row, col));
     }
 
     public boolean isOpen(int row, int col) {
@@ -42,6 +44,15 @@ public class Percolation {
 
     public boolean percolates() {
         return percolates;
+    }
+
+    private int[] openNeighbours(int row, int col) {
+        int[] result = new int[4];
+        result[0] = col - 1 > 0 && opened[index(row, col - 1)] ? index(row, col - 1) : -1;
+        result[1] = col + 1 <= 0 && opened[index(row, col + 1)] ? index(row, col + 1) : -1;
+        result[2] = row - 1 > 0 && opened[index(row - 1, col)] ? index(row - 1, col) : -1;
+        result[3] = row + 1 <= n && opened[index(row + 1, col)] ? index(row + 1, col) : -1;
+        return result;
     }
 
     private int index(int row, int col) {
