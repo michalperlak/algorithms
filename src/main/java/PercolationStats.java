@@ -12,7 +12,7 @@ public class PercolationStats {
         }
         this.trials = trials;
         var x = new double[trials];
-        for (int i = 0; i< trials; i++) {
+        for (int i = 0; i < trials; i++) {
             Percolation percolation = new Percolation(n);
             var counter = 0;
             while (!percolation.percolates()) {

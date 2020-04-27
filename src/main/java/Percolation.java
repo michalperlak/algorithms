@@ -4,6 +4,7 @@ public class Percolation {
     private final int n;
     private final int sourceIndex;
     private final boolean[] opened;
+    private int open = 0;
     private final WeightedQuickUnionUF unionFind;
     private boolean percolates = false;
 
@@ -16,6 +17,9 @@ public class Percolation {
     }
 
     public void open(int row, int col) {
+        if (!isOpen(row, col)) {
+            open++;
+        }
         var index = index(row, col);
         opened[index] = true;
         for (int neighbourIndex : openNeighbours(row, col)) {
@@ -39,7 +43,7 @@ public class Percolation {
     }
 
     public int numberOfOpenSites() {
-        return n * n - unionFind.count();
+        return open;
     }
 
     public boolean percolates() {
@@ -49,7 +53,7 @@ public class Percolation {
     private int[] openNeighbours(int row, int col) {
         int[] result = new int[4];
         result[0] = col - 1 > 0 && opened[index(row, col - 1)] ? index(row, col - 1) : -1;
-        result[1] = col + 1 <= 0 && opened[index(row, col + 1)] ? index(row, col + 1) : -1;
+        result[1] = col + 1 <= n && opened[index(row, col + 1)] ? index(row, col + 1) : -1;
         result[2] = row - 1 > 0 && opened[index(row - 1, col)] ? index(row - 1, col) : -1;
         result[3] = row + 1 <= n && opened[index(row + 1, col)] ? index(row + 1, col) : -1;
         return result;
@@ -69,5 +73,12 @@ public class Percolation {
         if (!condition) {
             throw new IllegalStateException(message);
         }
+    }
+
+    public static void main(String[] args) {
+        Percolation percolation = new Percolation(10);
+        percolation.open(1, 3);
+
+        System.out.println("aaa");
     }
 }
